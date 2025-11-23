@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -8,21 +8,35 @@ import Enterprise from './components/Enterprise';
 import Founder from './components/Founder';
 import Pricing from './components/Pricing';
 import Footer from './components/Footer';
+import About from './components/About';
 
 const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<'home' | 'about'>('home');
+
+  const navigateTo = (page: 'home' | 'about') => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="min-h-screen bg-primary text-textLight">
-      <Header />
+      <Header onNavigate={navigateTo} />
       <main>
-        <Hero />
-        <Features />
-        <DemoSection />
-        <SocialProof />
-        <Enterprise />
-        <Founder />
-        <Pricing />
+        {currentPage === 'home' ? (
+          <>
+            <Hero />
+            <Features />
+            <DemoSection />
+            <SocialProof />
+            <Enterprise />
+            <Founder onNavigate={navigateTo} />
+            <Pricing />
+          </>
+        ) : (
+          <About />
+        )}
       </main>
-      <Footer />
+      <Footer onNavigate={navigateTo} />
     </div>
   );
 };
